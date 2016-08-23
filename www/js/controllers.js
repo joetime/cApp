@@ -68,6 +68,7 @@ angular.module('starter.controllers', [])
         $scope.position = position.coords.latitude + ', ' + position.coords.longitude + ', accuracy: ' + position.coords.accuracy;
       },
       function(err) {
+        alert(err.message);
         console.error(err);
       });
   }
