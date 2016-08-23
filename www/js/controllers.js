@@ -30,6 +30,14 @@ angular.module('starter.controllers', [])
 .controller("ExampleCtrl", function($scope, $cordovaCamera) {
 
   $scope.takePicture = function() {
+
+    try {
+      var c = Camera;
+    } catch (err) {
+      alert('Camera not available on this device.', null, 'Device error', 'OK fine.')
+      return;
+    }
+
     var options = {
       quality: 75,
       destinationType: Camera.DestinationType.DATA_URL,
