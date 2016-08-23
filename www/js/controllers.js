@@ -29,6 +29,7 @@ angular.module('starter.controllers', [])
 
 .controller("ExampleCtrl", function($scope, $cordovaCamera, $cordovaGeolocation) {
 
+  // Access Camera
   $scope.takePicture = function() {
 
     try {
@@ -44,7 +45,7 @@ angular.module('starter.controllers', [])
       sourceType: Camera.PictureSourceType.CAMERA,
       allowEdit: true,
       encodingType: Camera.EncodingType.JPEG,
-      targetWidth: 300,
+      targetWidth: 400,
       targetHeight: 300,
       popoverOptions: CameraPopoverOptions,
       saveToPhotoAlbum: false
@@ -57,12 +58,14 @@ angular.module('starter.controllers', [])
     });
   }
 
+  // Access Geolocation
   $scope.getLocation = function() {
 
     var options = {
       timeout: 5000,
       enableHighAccuracy: true,
-    }
+    };
+
     $cordovaGeolocation.getCurrentPosition(options).then(function(position) {
         console.log(position);
         $scope.position = position.coords.latitude + ', ' + position.coords.longitude + ', accuracy: ' + position.coords.accuracy;
@@ -72,6 +75,49 @@ angular.module('starter.controllers', [])
         console.error(err);
       });
   }
+
+
+})
+
+.controller("MapCtrl", function($scope, $cordovaCamera, $cordovaGeolocation) {
+
+  // entire US
+  var defaultPosition = {
+    center: {
+      lat: 34.397,
+      lng: -95.644
+    },
+    zoom: 4
+  };
+  var geolocationOptions = {
+    timeout: 5000,
+    enableHighAccuracy: true,
+  };
+
+
+  var map = new google.maps.Map(document.getElementById('map'), {
+    center: defaultPosition.center,
+    scrollwheel: false,
+    zoom: defaultPosition.zoom
+  });
+
+  function init() {
+
+    $cordovaGeolocation.getCurrentPosition(geolocationOptions).then(function(position) {
+        var myLatlng = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        map.setCenter(myLatlng);
+        map.setZoom(19);
+      },
+      function(err) {
+        console.log('could not get position')
+      });
+  }
+  init();
+
+
 
 
 });
