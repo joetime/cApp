@@ -27,7 +27,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller("ExampleCtrl", function($scope, $cordovaCamera) {
+.controller("ExampleCtrl", function($scope, $cordovaCamera, $cordovaGeolocation) {
 
   $scope.takePicture = function() {
 
@@ -56,5 +56,21 @@ angular.module('starter.controllers', [])
       // An error occured. Show a message to the user
     });
   }
+
+  $scope.getLocation = function() {
+
+    var options = {
+      timeout: 5000,
+      enableHighAccuracy: true,
+    }
+    $cordovaGeolocation.getCurrentPosition(options).then(function(position) {
+        console.log(position);
+        $scope.position = position.coords.latitude + ', ' + position.coords.longitude + ', accuracy: ' + position.coords.accuracy;
+      },
+      function(err) {
+        console.error(err);
+      });
+  }
+
 
 });

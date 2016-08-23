@@ -1,7 +1,21 @@
 <ion-view view-title="Example">
     <ion-content>
-        <img ng-show="imgURI !== undefined" ng-src="{{imgURI}}">
-        <img ng-show="imgURI === undefined" ng-src="http://placehold.it/300x300">
-        <button class="button" ng-click="takePicture()">Take Picture</button>
+
+        <ion-list>
+            <ion-item>
+                <h2>Camera</h2>
+                <button type="button" class="button button-positive" ng-click="takePicture()">Take Picture</button>
+
+                <img ng-show="imgURI !== undefined" ng-src="{{imgURI}}" />
+                <img ng-show="imgURI === undefined" ng-src="http://placehold.it/300x300" />
+            </ion-item>
+            <ion-item>
+                <h2>Geolocation</h2>
+                <button type="button" class="button button-positive" ng-click="getLocation()">Get Location</button>
+                <br> {{position}}
+            </ion-item>
+        </ion-list>
+
+
     </ion-content>
 </ion-view>
