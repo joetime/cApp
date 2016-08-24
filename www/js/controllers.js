@@ -25,17 +25,10 @@ angular.module('starter.controllers', [])
   $scope.settings = $acgoSettings.allSettings();
 })
 
-.controller("ExampleCtrl", function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation) {
+.controller("ExampleCtrl", function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation, $dataService) {
 
   // Access Camera
   $scope.takePicture = function() {
-
-    /*try {
-      var c = Camera;
-    } catch (err) {
-      alert('Camera not available on this device.', null, 'Device error', 'OK fine.')
-      return;
-    }*/
 
     var options = $acgoSettings.camera();
 
@@ -61,6 +54,16 @@ angular.module('starter.controllers', [])
       });
   }
 
+  $scope.getData = function() {
+    $dataService.getTodo(1).then(function(result) {
+        console.log(result);
+        $scope.dataResult = result.data.Test;
+      },
+      function(err) {
+        console.log('data err', err);
+        $scope.dataResult = err.data || err.message;
+      });
+  }
 
 })
 
