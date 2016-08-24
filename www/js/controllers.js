@@ -132,13 +132,22 @@ angular.module('starter.controllers', [])
 
       function init() {
 
+        // try to get the current position
+        // and recenter the map
         $cordovaGeolocation.getCurrentPosition(geolocationOptions).then(function(position) {
+
             var myLatlng = {
               lat: position.coords.latitude,
-              lng: position.coords.longitude
+              lng: position.coords.longitude,
+              acc: position.coords.accuracy // only needed for logging
             };
+
+            log('position found', myLatlng);
+
             map.setCenter(myLatlng);
             map.setZoom(19);
+
+
           },
           function(err) {
             log('could not get position')
