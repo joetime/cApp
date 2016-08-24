@@ -20,7 +20,8 @@
             <ion-item>
 
                 <button type="button" class="button button-positive" ng-click="getData()">Get Data</button>
-                <br /> {{dataResult}}
+                <br />
+                <span ng-show="gettingData">one moment...</span> {{dataResult}}
             </ion-item>
         </ion-list>
 

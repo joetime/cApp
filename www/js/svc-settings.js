@@ -1,5 +1,7 @@
-angular.module('starter').service('$acgoSettings', ['$cordovaCamera',
-    function($cordovaCamera) {
+angular.module('starter').service('$acgoSettings', ['$cordovaCamera', '$logService',
+    function($cordovaCamera, $logService) {
+
+        var log = $logService.log;
 
         var defaults = {
             camera: {
@@ -32,7 +34,7 @@ angular.module('starter').service('$acgoSettings', ['$cordovaCamera',
             defaults.camera.popoverOptions = CameraPopoverOptions;
 
         } catch (err) {
-            console.warn('Camera not available on this device.')
+            log('Camera not available on this device.')
         }
 
         return {

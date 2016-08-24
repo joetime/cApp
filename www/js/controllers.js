@@ -1,102 +1,144 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {})
+.controller('DashCtrl',
+  function($scope, $logService) {
+    var log = $logService.log;
+    log('DashCtrl init');
 
-.controller('ChatsCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
+  })
 
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
-})
+.controller('ChatsCtrl',
+  function($scope, Chats, $logService) {
+    var log = $logService.log;
+    log('ChatsCtrl init');
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
-})
+    // With the new view caching in Ionic, Controllers are only called
+    // when they are recreated or on app start, instead of every page change.
+    // To listen for when this page is active (for example, to refresh data),
+    // listen for the $ionicView.enter event:
+    //
+    //$scope.$on('$ionicView.enter', function(e) {
+    //});
 
-.controller('SettingsCtrl', function($scope, $acgoSettings) {
-  $scope.settings = $acgoSettings.allSettings();
-})
+    $scope.chats = Chats.all();
+    $scope.remove = function(chat) {
+      Chats.remove(chat);
+    };
+  })
 
-.controller("SystemTestsCtrl", function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation, $dataService) {
 
-  // Access Camera
-  $scope.takePicture = function() {
+.controller('ChatDetailCtrl',
+  function($scope, $stateParams, Chats, $logService) {
+    var log = $logService.log;
+    log('ChatDetailCtrl init');
 
-    var options = $acgoSettings.camera();
+    $scope.chat = Chats.get($stateParams.chatId);
+  })
 
-    $cordovaCamera.getPicture(options).then(function(imageData) {
-      $scope.imgURI = "data:image/jpeg;base64," + imageData;
-    }, function(err) {
-      // An error occured. Show a message to the user
-    });
-  }
+.controller('SettingsCtrl',
+  function($scope, $acgoSettings, $logService) {
+    var log = $logService.log;
+    log('SettingsCtrl init');
 
-  // Access Geolocation
-  $scope.getLocation = function() {
+    $scope.settings = $acgoSettings.allSettings();
+  })
 
-    $scope.gettingLocation = true;
+.controller("SystemTestsCtrl",
+  function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation, $dataService, $logService) {
 
-    var options = $acgoSettings.geolocation();
+    var log = $logService.log;
+    log('SystemTestsCtrl init');
 
-    $cordovaGeolocation.getCurrentPosition(options).then(function(position) {
-        console.log(position);
-        $scope.position = position.coords.latitude + ', ' + position.coords.longitude + ', accuracy: ' + position.coords.accuracy;
-        $scope.gettingLocation = false;
-      },
-      function(err) {
-        alert(err.message);
-        console.error(err);
-        $scope.gettingLocation = false;
+
+    // Access Camera
+    $scope.takePicture = function() {
+
+      var options = $acgoSettings.camera();
+
+      $cordovaCamera.getPicture(options).then(function(imageData) {
+        $scope.imgURI = "data:image/jpeg;base64," + imageData;
+      }, function(err) {
+        // An error occured. Show a message to the user
       });
-  }
+    }
 
-  $scope.getData = function() {
-    $dataService.getTodo(1).then(function(result) {
-        console.log(result);
-        $scope.dataResult = result.data.Test;
-      },
-      function(err) {
-        console.log('data err', err);
-        $scope.dataResult = err.data || err.message;
+    // Access Geolocation
+    $scope.getLocation = function() {
+
+      $scope.gettingLocation = true;
+
+      var options = $acgoSettings.geolocation();
+
+      $cordovaGeolocation.getCurrentPosition(options).then(function(position) {
+          log('geolocation success', position);
+          $scope.position = position.coords.latitude + ', ' + position.coords.longitude + ', accuracy: ' + position.coords.accuracy;
+          $scope.gettingLocation = false;
+        },
+        function(err) {
+          alert(err.message);
+          log('geolocation error', err);
+          $scope.gettingLocation = false;
+        });
+    }
+
+    $scope.getData = function() {
+
+      $scope.gettingData = true;
+      $dataService.test().then(function(result) {
+          log('dataService success', result);
+          $scope.dataResult = result.data.Test;
+          $scope.gettingData = false;
+        },
+        function(err) {
+          log('data err', err);
+          $scope.dataResult = 'ERROR: ' + (err.data || err.message || err.status);
+          $scope.gettingData = false;
+        });
+    }
+
+  })
+
+.controller("MapCtrl",
+    function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation, $logService) {
+
+      var log = $logService.log;
+      log('MapCtrl init');
+
+      // entire US
+      var defaultPosition = $acgoSettings.mapDefaultPosition();
+      var geolocationOptions = $acgoSettings.geolocation();
+
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: defaultPosition.center,
+        scrollwheel: false,
+        zoom: defaultPosition.zoom
       });
-  }
 
-})
+      function init() {
 
-.controller("MapCtrl", function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation) {
+        $cordovaGeolocation.getCurrentPosition(geolocationOptions).then(function(position) {
+            var myLatlng = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            map.setCenter(myLatlng);
+            map.setZoom(19);
+          },
+          function(err) {
+            log('could not get position')
+          });
+      }
+      init();
 
-  // entire US
-  var defaultPosition = $acgoSettings.mapDefaultPosition();
-  var geolocationOptions = $acgoSettings.geolocation();
+    })
+  .controller("LogsCtrl", function($scope, $logService) {
 
-  var map = new google.maps.Map(document.getElementById('map'), {
-    center: defaultPosition.center,
-    scrollwheel: false,
-    zoom: defaultPosition.zoom
-  });
+    var log = $logService.log;
+    log('LogsCtrl init');
 
-  function init() {
+    $scope.logs = $logService.logs;
 
-    $cordovaGeolocation.getCurrentPosition(geolocationOptions).then(function(position) {
-        var myLatlng = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        map.setCenter(myLatlng);
-        map.setZoom(19);
-      },
-      function(err) {
-        console.log('could not get position')
-      });
-  }
-  init();
-
-});
+    $logService.listen(function(logs) {
+      $scope.logs = logs;
+    })
+  })

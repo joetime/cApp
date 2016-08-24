@@ -1,0 +1,14 @@
+<ion-view view-title="Logs">
+    <ion-content class="padding">
+        <ion-list>
+            <ion-item ng-repeat="log in logs" ng-click="expand=!expand">
+                <i ng-show="log.object!=undefined && !expand" class="ion-arrow-right-b"></i>
+                <i ng-show="log.object!=undefined && expand" class="ion-arrow-down-b"></i>
+                <b>{{log.msg}}</b>
+                <br />
+                <span ng-show="expand">{{log.object}}</span>
+            </ion-item>
+        </ion-list>
+
+    </ion-content>
+</ion-view>

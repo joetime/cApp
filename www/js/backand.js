@@ -18,6 +18,11 @@ angular.module('starter').config(function(BackandProvider) {
         return getUrl() + id;
     }
 
+    test = function() {
+        var url = Backand.getApiUrl() + baseUrl + 'Test/1'
+        return $http.get(url);
+    }
+
     getTodos = function() {
         return $http.get(getUrl());
     };
@@ -35,6 +40,7 @@ angular.module('starter').config(function(BackandProvider) {
     };
 
     return {
+        test: test,
         getTodo: getTodo,
         getTodos: getTodos,
         addTodo: addTodo,
