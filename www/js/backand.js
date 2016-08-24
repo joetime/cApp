@@ -46,4 +46,38 @@ angular.module('starter').config(function(BackandProvider) {
         addTodo: addTodo,
         deleteTodo: deleteTodo
     }
-});
+})
+
+.service('$fileUploadService', function() {
+
+    var actionUrl = "https://api.backand.com/1/objects/action/Test/?name=file"
+
+    function upload(filename, filedata) {
+        // By calling the files action with POST method in will perform 
+        // an upload of the file into Backand Storage
+
+        log('upload filename', filename)
+        log('upload filedata', filedata);
+
+        return $http({
+            method: 'POST',
+            url: actionUrl, //Backand.getApiUrl() + baseActionUrl +  objectName,
+            params: {
+                "name": filesActionName
+            },
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            // you need to provide the file name and the file data
+            data: {
+                "filename": filename,
+                "filedata": filedata.substr(filedata.indexOf(',') + 1, filedata.length) //need to remove the file prefix type
+            }
+        });
+    };
+
+    return {
+        doUpload: upload
+    }
+
+})

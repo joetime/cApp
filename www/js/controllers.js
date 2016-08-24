@@ -44,7 +44,7 @@ angular.module('starter.controllers', [])
   })
 
 .controller("SystemTestsCtrl",
-  function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation, $dataService, $logService, $errorService) {
+  function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation, $dataService, $logService, $fileUploadService, $errorService, $http) {
 
     var log = $logService.log;
     log('SystemTestsCtrl init');
@@ -57,6 +57,20 @@ angular.module('starter.controllers', [])
 
       $cordovaCamera.getPicture(options).then(function(imageData) {
         $scope.imgURI = "data:image/jpeg;base64," + imageData;
+
+        if (confirm('test upload?')) {
+
+          $fileUploadService.doUpload(
+            'testimage.jpg', "data:image/jpeg;base64," + imageData
+          ).then(function(d) {
+              log('upload success', d)
+            },
+            function(err) {
+              log('upload err', d)
+            });
+
+        }
+
       }, function(err) {
         // An error occured. Show a message to the user
       });
@@ -144,8 +158,11 @@ angular.module('starter.controllers', [])
 
             log('position found', myLatlng);
 
+            var zoom = 19;
+            if (position.coords.accuracy > 1000) zoom = 17;
+
             map.setCenter(myLatlng);
-            map.setZoom(19);
+            map.setZoom(zoom);
 
 
           },
