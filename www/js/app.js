@@ -8,17 +8,46 @@
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'backand'])
 
 .run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
+    $ionicPlatform.ready(function() {
+      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+      // for form inputs)
+      if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        cordova.plugins.Keyboard.disableScroll(true);
 
-    }
-    if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
-    }
+      }
+      if (window.StatusBar) {
+        // org.apache.cordova.statusbar required
+        StatusBar.styleDefault();
+      }
+    });
+  })
+  // Configure the error handler
+  .config(function($provide) {
+    $provide.decorator('$exceptionHandler', ['$log', '$delegate', '$injector',
+      function($log, $delegate, $injector) {
+
+        console.info('exceptionHandler init');
+
+        return function(exception, cause) {
+
+          // get the audit service
+          var $errorService = $injector.get("$errorService");
+
+          // get the current url
+          var url = window.location.href;
+
+          // log to server
+          $errorService.log(exception, url, cause);
+
+          // pass on the error (does not resolve, keeps throwing)
+          $delegate(exception, cause);
+
+          console.info('Logged error to server:', {
+            exception: exception,
+            cause: cause
+          });
+        };
+      }
+    ]);
   });
-});

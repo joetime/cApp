@@ -44,7 +44,7 @@ angular.module('starter.controllers', [])
   })
 
 .controller("SystemTestsCtrl",
-  function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation, $dataService, $logService) {
+  function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation, $dataService, $logService, $errorService) {
 
     var log = $logService.log;
     log('SystemTestsCtrl init');
@@ -94,6 +94,22 @@ angular.module('starter.controllers', [])
           $scope.dataResult = 'ERROR: ' + (err.data || err.message || err.status);
           $scope.gettingData = false;
         });
+    }
+
+    $scope.logError = function() {
+      $scope.loggingError = true;
+      $errorService.test().then(
+        function(result) {
+          log('error log success');
+          $scope.errorResult = result;
+          $scope.loggingError = false;
+        },
+        function(err) {
+          log('error log err', err);
+          $scope.errorResult = 'ERROR: ' + (err.data || err.message || err.status);
+          $scope.loggingError = false;
+        }
+      )
     }
 
   })
