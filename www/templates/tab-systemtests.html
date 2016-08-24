@@ -1,21 +1,24 @@
-<ion-view view-title="Example">
+<ion-view view-title="System Tests">
     <ion-content>
-        <h1>Test Plugins</h1>
+
         <ion-list>
+            <ion-item class="item-divider">Camera</ion-item>
             <ion-item>
-                <h2>Camera</h2>
+
                 <button type="button" class="button button-positive" ng-click="takePicture()">Take Picture</button>
 
                 <img ng-show="imgURI !== undefined" ng-src="{{imgURI}}" />
                 <img ng-show="imgURI === undefined" ng-src="http://placehold.it/400x300" />
             </ion-item>
+            <ion-item class="item-divider">Geolocation</ion-item>
             <ion-item>
-                <h2>Geolocation</h2>
                 <button type="button" class="button button-positive" ng-click="getLocation()">Get Location</button>
-                <br /> {{position}}
+                <br />
+                <span ng-show="gettingLocation">one moment...</span> {{position}}
             </ion-item>
+            <ion-item class="item-divider">Backand (database)</ion-item>
             <ion-item>
-                <h2>Data Service</h2>
+
                 <button type="button" class="button button-positive" ng-click="getData()">Get Data</button>
                 <br /> {{dataResult}}
             </ion-item>

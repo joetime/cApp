@@ -49,12 +49,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       }
     })
-    .state('tab.example', {
-      url: '/example',
+    .state('tab.systemtests', {
+      url: '/systemtests',
       views: {
-        'tab-example': {
-          templateUrl: 'templates/tab-example.html',
-          controller: 'ExampleCtrl'
+        'tab-systemtests': {
+          templateUrl: 'templates/tab-systemtests.html',
+          controller: 'SystemTestsCtrl'
         }
       }
     })

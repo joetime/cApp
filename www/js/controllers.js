@@ -25,7 +25,7 @@ angular.module('starter.controllers', [])
   $scope.settings = $acgoSettings.allSettings();
 })
 
-.controller("ExampleCtrl", function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation, $dataService) {
+.controller("SystemTestsCtrl", function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation, $dataService) {
 
   // Access Camera
   $scope.takePicture = function() {
@@ -42,15 +42,19 @@ angular.module('starter.controllers', [])
   // Access Geolocation
   $scope.getLocation = function() {
 
+    $scope.gettingLocation = true;
+
     var options = $acgoSettings.geolocation();
 
     $cordovaGeolocation.getCurrentPosition(options).then(function(position) {
         console.log(position);
         $scope.position = position.coords.latitude + ', ' + position.coords.longitude + ', accuracy: ' + position.coords.accuracy;
+        $scope.gettingLocation = false;
       },
       function(err) {
         alert(err.message);
         console.error(err);
+        $scope.gettingLocation = false;
       });
   }
 
