@@ -21,35 +21,23 @@ angular.module('starter.controllers', [])
   $scope.chat = Chats.get($stateParams.chatId);
 })
 
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
+.controller('SettingsCtrl', function($scope, $acgoSettings) {
+  $scope.settings = $acgoSettings.allSettings();
 })
 
-.controller("ExampleCtrl", function($scope, $cordovaCamera, $cordovaGeolocation) {
+.controller("ExampleCtrl", function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation) {
 
   // Access Camera
   $scope.takePicture = function() {
 
-    try {
+    /*try {
       var c = Camera;
     } catch (err) {
       alert('Camera not available on this device.', null, 'Device error', 'OK fine.')
       return;
-    }
+    }*/
 
-    var options = {
-      quality: 75,
-      destinationType: Camera.DestinationType.DATA_URL,
-      sourceType: Camera.PictureSourceType.CAMERA,
-      allowEdit: true,
-      encodingType: Camera.EncodingType.JPEG,
-      targetWidth: 400,
-      targetHeight: 300,
-      popoverOptions: CameraPopoverOptions,
-      saveToPhotoAlbum: false
-    };
+    var options = $acgoSettings.camera();
 
     $cordovaCamera.getPicture(options).then(function(imageData) {
       $scope.imgURI = "data:image/jpeg;base64," + imageData;
@@ -61,10 +49,7 @@ angular.module('starter.controllers', [])
   // Access Geolocation
   $scope.getLocation = function() {
 
-    var options = {
-      timeout: 5000,
-      enableHighAccuracy: true,
-    };
+    var options = $acgoSettings.geolocation();
 
     $cordovaGeolocation.getCurrentPosition(options).then(function(position) {
         console.log(position);
@@ -79,21 +64,11 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller("MapCtrl", function($scope, $cordovaCamera, $cordovaGeolocation) {
+.controller("MapCtrl", function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation) {
 
   // entire US
-  var defaultPosition = {
-    center: {
-      lat: 34.397,
-      lng: -95.644
-    },
-    zoom: 4
-  };
-  var geolocationOptions = {
-    timeout: 5000,
-    enableHighAccuracy: true,
-  };
-
+  var defaultPosition = $acgoSettings.mapDefaultPosition();
+  var geolocationOptions = $acgoSettings.geolocation();
 
   var map = new google.maps.Map(document.getElementById('map'), {
     center: defaultPosition.center,
@@ -116,8 +91,5 @@ angular.module('starter.controllers', [])
       });
   }
   init();
-
-
-
 
 });
