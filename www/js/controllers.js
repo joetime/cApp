@@ -41,6 +41,14 @@ angular.module('starter.controllers', [])
     log('SettingsCtrl init');
 
     $scope.settings = $acgoSettings.allSettings();
+
+    $scope.quality = $scope.settings.camera.quality;
+
+    $scope.qualityChange = function(q) {
+      $scope.quality = q;
+      log('quality: ', $scope.quality);
+    }
+
   })
 
 .controller("SystemTestsCtrl",

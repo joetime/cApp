@@ -44,6 +44,9 @@ angular.module('starter').service('$acgoSettings', ['$cordovaCamera', '$logServi
             allSettings: function() {
                 return defaults;
             },
+            setQuality: function(x) {
+                defaults.camera.quality = x;
+            },
             camera: function() {
                 try {
                     var c = Camera;
