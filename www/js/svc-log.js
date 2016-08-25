@@ -1,4 +1,4 @@
-angular.module('starter').service('$logService', function() {
+angular.module('starter').service('$logService', function($errorService) {
 
     var logs = [];
     var listeners = [];
@@ -20,7 +20,7 @@ angular.module('starter').service('$logService', function() {
     };
 
     // add log to the list, then call all the listeners
-    function log(msg, obj) {
+    function log(msg, obj, server) {
         if (obj)
             console.log(msg, obj);
         else
@@ -35,6 +35,11 @@ angular.module('starter').service('$logService', function() {
         angular.forEach(listeners, function(listener) {
             listener(logs);
         });
+
+        // try logging to server
+        if (server) {
+            $errorService.logOther(msg, obj);
+        }
     }
 
     // add a function to the listeners list

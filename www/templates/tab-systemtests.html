@@ -9,6 +9,21 @@
                 <img ng-show="imgURI !== undefined" ng-src="{{imgURI}}" />
                 <img ng-show="imgURI === undefined" ng-src="http://placehold.it/400x300" />
             </ion-item>
+            <!-- Upload test -->
+            <ion-item class="item-divider">Upload file</ion-item>
+            <ion-item>
+
+                <button type="button" class="button button-positive" ng-click="uploadTest()">Upload</button>
+                <br />
+                <span ng-show="uploading">one moment...</span> {{uploadResult}}
+            </ion-item>
+            <!-- Download test -->
+            <ion-item class="item-divider">Download file</ion-item>
+            <ion-item>
+                <button type="button" class="button button-positive" ng-click="downloadTest()">Download</button>
+                <br />
+                <span ng-show="downloading">one moment...</span> {{downloadResult}}
+            </ion-item>
             <!-- Geolocation -->
             <ion-item class="item-divider">Geolocation</ion-item>
             <ion-item>

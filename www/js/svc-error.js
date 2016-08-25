@@ -7,18 +7,25 @@ angular.module('starter')
 
             isTest = isTest || false;
 
-            var timeStamp = new Date();
+            var exString = 'JSON:' + JSON.stringify(ex);
 
             var record = {
                 //"timeStamp": timeStamp,
-                "exception": ex,
+                "exception": exString,
                 "url": url,
                 "cause": cause,
                 "isTest": isTest
-            }
+            };
 
-            //log('logging error: ', record);
+            return $http.post(endpointUrl, record);
+        }
 
+        logOther = function(msg, obj) {
+            obj = JSON.stringify(obj);
+            var record = {
+                "exception": obj,
+                "url": msg
+            };
             return $http.post(endpointUrl, record);
         }
 
@@ -28,6 +35,7 @@ angular.module('starter')
 
         return {
             log: logError,
+            logOther: logOther,
             test: test
         }
     });

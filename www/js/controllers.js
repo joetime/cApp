@@ -44,7 +44,7 @@ angular.module('starter.controllers', [])
   })
 
 .controller("SystemTestsCtrl",
-  function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation, $dataService, $logService, $fileUploadService, $errorService, $http) {
+  function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation, $dataService, $logService, $fileUploadService, $errorService, $http, Backand) {
 
     var log = $logService.log;
     log('SystemTestsCtrl init');
@@ -54,27 +54,112 @@ angular.module('starter.controllers', [])
     $scope.takePicture = function() {
 
       var options = $acgoSettings.camera();
+      log('camera options', options, true);
 
-      $cordovaCamera.getPicture(options).then(function(imageData) {
-        $scope.imgURI = "data:image/jpeg;base64," + imageData;
+      $cordovaCamera.getPicture(options).then(function(imageDataURL) {
 
-        if (confirm('test upload?')) {
+        // show picture in UI
+        $scope.imgURI = "data:image/jpeg;base64," + imageDataURL;
 
-          $fileUploadService.doUpload(
-            'testimage.jpg', "data:image/jpeg;base64," + imageData
-          ).then(function(d) {
-              log('upload success', d)
+        if (imageDataURL && confirm('test upload?')) {
+
+          log('attempting upload', imageDataURL, true)
+
+          $http({
+            method: 'POST',
+            url: Backand.getApiUrl() + '/1/objects/action/Test/1',
+            params: {
+              name: 'files',
+              parameters: {
+                filename: 'test.jpg',
+              }
+            },
+            config: {
+              ignoreError: true
+            },
+            data: {
+              filedata: imageDataURL
+            }
+          }).then(function(d) {
+              log('camera upload success', d, true);
+              $scope.uploadResult = d;
+              $scope.uploading = false;
             },
             function(err) {
-              log('upload err', d)
+              log('camera upload error', err, true);
+              $scope.uploadResult = err;
+              $scope.uploading = false;
             });
-
         }
 
       }, function(err) {
+        log('error getting picture', err, true);
         // An error occured. Show a message to the user
       });
     }
+
+
+    // Test upload files 
+    $scope.uploadTest = function() {
+      log('uploading test...');
+      $scope.uploading = true;
+
+      $http({
+        method: 'POST',
+        url: Backand.getApiUrl() + '/1/objects/action/Test/1',
+        params: {
+          name: 'files',
+          parameters: {
+            filename: 'test.txt',
+            filedata: 'abcd'
+          }
+        },
+        config: {
+          ignoreError: true
+        },
+        data: {}
+      }).then(function(d) {
+          log('upload success', d, true);
+          $scope.uploadResult = d;
+          $scope.uploading = false;
+        },
+        function(err) {
+          log('upload error', err, true);
+          $scope.uploadResult = err;
+          $scope.uploading = false;
+        });
+    }
+
+    $scope.downloadTest = function() {
+
+      log('uploading test...');
+      $scope.downloading = true;
+
+      $http({
+        method: 'GET',
+        url: Backand.getApiUrl() + '/1/objects/action/Test/1',
+        params: {
+          name: 'files',
+          parameters: {
+            filename: 'test.txt',
+            //filedata: 'abcd'
+          }
+        },
+        config: {
+          ignoreError: true
+        },
+        data: {}
+      }).then(function(d) {
+          log('download success', d, true);
+          $scope.uploadResult = d;
+          $scope.downloading = false;
+        },
+        function(err) {
+          log('download error', err, true);
+          $scope.uploadResult = err;
+          $scope.downloading = false;
+        });
+    };
 
     // Access Geolocation
     $scope.getLocation = function() {
@@ -95,6 +180,7 @@ angular.module('starter.controllers', [])
         });
     }
 
+    // Test connection to Backand
     $scope.getData = function() {
 
       $scope.gettingData = true;
@@ -110,6 +196,7 @@ angular.module('starter.controllers', [])
         });
     }
 
+    // Test logging errors
     $scope.logError = function() {
       $scope.loggingError = true;
       $errorService.test().then(

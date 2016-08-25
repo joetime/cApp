@@ -28,7 +28,9 @@ angular.module('starter').service('$acgoSettings', ['$cordovaCamera', '$logServi
         try {
             var c = Camera; // will fail if no Camera is defined
 
+            log('setting additional camera defaults');
             defaults.camera.destinationType = c.DestinationType.DATA_URL;
+            //defaults.camera.destinationType = c.DestinationType.FILE_URI;
             defaults.camera.sourceType = c.PictureSourceType.CAMERA;
             defaults.camera.encodingType = c.EncodingType.JPEG;
             defaults.camera.popoverOptions = CameraPopoverOptions;
