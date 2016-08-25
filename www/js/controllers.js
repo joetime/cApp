@@ -64,6 +64,8 @@ angular.module('starter.controllers', [])
         if (imageDataURL && confirm('test upload?')) {
 
           log('attempting upload', imageDataURL, true)
+          $scope.uploading = true;
+          $scope.uploadUrl = '';
 
           $http({
             method: 'POST',
@@ -83,6 +85,7 @@ angular.module('starter.controllers', [])
           }).then(function(d) {
               log('camera upload success', d, true);
               $scope.uploadResult = d;
+              $scope.uploadUrl = d.url;
               $scope.uploading = false;
             },
             function(err) {

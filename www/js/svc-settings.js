@@ -5,11 +5,12 @@ angular.module('starter').service('$acgoSettings', ['$cordovaCamera', '$logServi
 
         var defaults = {
             camera: {
-                quality: 75,
-                allowEdit: true,
-                targetWidth: 400,
-                targetHeight: 300,
-                saveToPhotoAlbum: false
+                quality: 50,
+                //allowEdit: true,
+                targetWidth: 960,
+                targetHeight: 640,
+                saveToPhotoAlbum: false,
+                //correctOrientation: true
             },
             geolocation: {
                 timeout: 5000,
