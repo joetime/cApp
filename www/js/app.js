@@ -27,6 +27,7 @@ angular.module('starter',
         // org.apache.cordova.statusbar required
         StatusBar.styleDefault();
       }
+
     });
   })
   // Configure the error handler

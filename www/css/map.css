@@ -1,22 +1,24 @@
-.scroll {
+#map-content {
+    padding-top: 70px;
+}
+
+#map-content .scroll {
     height: 100%
 }
 
-#map {
-    /*display: block;*/
+#map-content #map {
     height: 100%;
     width: 100%;
     background-color: steelblue;
-    /*margin-top: 16px;*/
 }
 
-.button-feature {
+#map-content #form-pane {
+    width: 33%;
+    height: 80%;
+    top: 10%;
+    bottom: 10%;
     position: fixed;
-    bottom: 60px;
-    right: 15px;
-    z-index: 100;
-    border-radius: 100px;
-    box-shadow: #888 1px 1px 5px;
-    min-height: 52px;
-    /*padding: 0;*/
+    /* right: 0; */
+    left: 67%;
+    opacity: .8;
 }
