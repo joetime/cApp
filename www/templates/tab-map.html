@@ -1,16 +1,12 @@
-<ion-view view-title="Map">
-    <style>
-        .scroll {
-            height: 100%
-        }
-        
-        #map {
-            height: 100%;
-            width: 100%;
-            background-color: gray;
-        }
-    </style>
-    <ion-content>
-        <div id="map"></div>
-    </ion-content>
+<ion-content scroll="false">
+    <link href="css/map.css" rel="stylesheet">
+
+    <div class="bar bar-header">
+        <h1 class="title">Map</h1>
+        <button class="button" ng-click="centerMap()">Recenter</button>
+    </div>
+
+    <div id="map"></div>
+
+</ion-content>
 </ion-view>

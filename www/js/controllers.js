@@ -226,59 +226,15 @@ angular.module('starter.controllers', [])
 
   })
 
-.controller("MapCtrl",
-    function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation, $logService) {
 
-      var log = $logService.log;
-      log('MapCtrl init');
+.controller("LogsCtrl", function($scope, $logService) {
 
-      // entire US
-      var defaultPosition = $acgoSettings.mapDefaultPosition();
-      var geolocationOptions = $acgoSettings.geolocation();
+  var log = $logService.log;
+  log('LogsCtrl init');
 
-      var map = new google.maps.Map(document.getElementById('map'), {
-        center: defaultPosition.center,
-        scrollwheel: false,
-        zoom: defaultPosition.zoom
-      });
+  $scope.logs = $logService.logs;
 
-      function init() {
-
-        // try to get the current position
-        // and recenter the map
-        $cordovaGeolocation.getCurrentPosition(geolocationOptions).then(function(position) {
-
-            var myLatlng = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-              acc: position.coords.accuracy // only needed for logging
-            };
-
-            log('position found', myLatlng);
-
-            var zoom = 19;
-            if (position.coords.accuracy > 1000) zoom = 17;
-
-            map.setCenter(myLatlng);
-            map.setZoom(zoom);
-
-
-          },
-          function(err) {
-            log('could not get position')
-          });
-      }
-      init();
-
-    })
-  .controller("LogsCtrl", function($scope, $logService) {
-
-    var log = $logService.log;
-    log('LogsCtrl init');
-
-    $scope.logs = $logService.logs;
-
-    $logService.listen(function(logs) {
-      $scope.logs = logs;
-    })
+  $logService.listen(function(logs) {
+    $scope.logs = logs;
   })
+})

@@ -3,7 +3,9 @@ angular.module('starter').config(function(BackandProvider) {
     BackandProvider.setAppName('acgo');
     BackandProvider.setSignUpToken('26162e7b-934a-42ea-bd44-8e8e73eab36e');
     BackandProvider.setAnonymousToken('f53fd52e-dec6-41c8-93b4-daef813ebdbe');
-})
+});
+
+angular.module('starter.services')
 
 .service('$dataService', function($http, Backand) {
 

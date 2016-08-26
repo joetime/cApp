@@ -1,4 +1,4 @@
-angular.module('starter').service('$acgoSettings', ['$cordovaCamera', '$logService',
+angular.module('starter.services').service('$acgoSettings', ['$cordovaCamera', '$logService',
     function($cordovaCamera, $logService) {
 
         var log = $logService.log;

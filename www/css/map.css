@@ -1,0 +1,22 @@
+.scroll {
+    height: 100%
+}
+
+#map {
+    /*display: block;*/
+    height: 100%;
+    width: 100%;
+    background-color: steelblue;
+    /*margin-top: 16px;*/
+}
+
+.button-feature {
+    position: fixed;
+    bottom: 60px;
+    right: 15px;
+    z-index: 100;
+    border-radius: 100px;
+    box-shadow: #888 1px 1px 5px;
+    min-height: 52px;
+    /*padding: 0;*/
+}

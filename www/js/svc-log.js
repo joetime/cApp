@@ -1,4 +1,4 @@
-angular.module('starter').service('$logService', function($errorService) {
+angular.module('starter.services').service('$logService', function($errorService) {
 
     var logs = [];
     var listeners = [];

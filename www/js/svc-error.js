@@ -1,4 +1,4 @@
-angular.module('starter')
+angular.module('starter.services')
     .service('$errorService', function($http, Backand) {
 
         var endpointUrl = 'https://api.backand.com/1/objects/exceptions/';
@@ -11,6 +11,7 @@ angular.module('starter')
 
             var record = {
                 //"timeStamp": timeStamp,
+                "type": "ERROR",
                 "exception": exString,
                 "url": url,
                 "cause": cause,
@@ -23,6 +24,7 @@ angular.module('starter')
         logOther = function(msg, obj) {
             obj = JSON.stringify(obj);
             var record = {
+                "type": "LOG",
                 "exception": obj,
                 "url": msg
             };
