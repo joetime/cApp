@@ -41,23 +41,12 @@ angular.module('starter.services')
                 if (drawingMode) {
                     log('initializing drawingManager')
                     drawingManager = new google.maps.drawing.DrawingManager({
-                        drawingMode: google.maps.drawing.OverlayType.MARKER,
+                        //drawingMode: google.maps.drawing.OverlayType.MARKER,
                         drawingControl: true,
                         drawingControlOptions: {
                             position: google.maps.ControlPosition.TOP_CENTER,
                             drawingModes: ['marker', 'polygon', 'polyline'] // circle', 'polygon', 'polyline', 'rectangle']
                         },
-                        markerOptions: {
-                            icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
-                        },
-                        circleOptions: {
-                            fillColor: '#ffff00',
-                            fillOpacity: 1,
-                            strokeWeight: 5,
-                            clickable: false,
-                            editable: true,
-                            zIndex: 1
-                        }
                     });
                     drawingManager.setMap(map);
                 }
@@ -110,14 +99,12 @@ angular.module('starter.services')
             // add listeners for each type of object
             function addDrawingListener(callback) {
 
-                google.maps.event.addListener(drawingManager, 'markercomplete', function(marker) {
-                    callback(marker);
-                });
-                google.maps.event.addListener(drawingManager, 'polygoncomplete', function(polygon) {
-                    callback(polygon);
-                });
-                google.maps.event.addListener(drawingManager, 'polylinecomplete', function(polyline) {
-                    callback(polyline);
+                google.maps.event.addListener(drawingManager, 'overlaycomplete', function(overlay) {
+                    log('overlay created: ', overlay);
+                    // turn off creating
+                    drawingManager.setDrawingMode(null);
+                    // do callback
+                    callback(overlay);
                 });
             }
 

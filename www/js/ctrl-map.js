@@ -24,23 +24,35 @@ angular.module('starter.controllers')
 
                 // create the map
                 map = $gMapService.init({
-                    drawingMode: true
+                    drawingMode: true,
+                    drawingModeDisableAfterCreate: true
                 });
                 // on map click
                 map.addListener('click', function($event) {
                     log('map clicked: ', $event);
                 });
+
                 // on drawing object created
                 $gMapService.addDrawingListener(function(drawingObject) {
-                    log('drawing object created:', drawingObject);
-                    $gMapService.center(drawingObject);
-                    $scope.showForm = true;
-                    $scope.$apply();
+                    log('drawing object created:', drawingObject.type);
+
+                    drawingObject.overlay.addListener('click', function($event) {
+                        log('marker clicked: ', $event);
+                        openAndCenterObject($event);
+                    });
+
+                    openAndCenterObject(drawingObject.overlay);
                 });
 
                 // try to get the current position
                 // and recenter the map
                 $gMapService.center();
+            }
+
+            function openAndCenterObject(obj) {
+                $gMapService.center(obj);
+                $scope.showForm = true;
+                $scope.$apply();
             }
 
             // initalize the controller
