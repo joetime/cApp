@@ -52,7 +52,7 @@ angular.module('starter.controllers')
             function openAndCenterObject(obj) {
                 $gMapService.center(obj);
                 $scope.showForm = true;
-                $scope.$apply();
+                //$scope.$apply();
             }
 
             // initalize the controller

@@ -26,10 +26,11 @@ angular.module('starter.services').service('$logService', function($errorService
         else
             console.log(msg);
 
-        logs.push({
+        // insert logs at front of list
+        logs.splice(0, 0, {
             msg: msg,
             object: obj
-        })
+        });
 
         // let everyone know the log has been updated
         angular.forEach(listeners, function(listener) {
