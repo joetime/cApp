@@ -40,13 +40,15 @@ angular.module('starter.controllers')
                     log('overlay created', overlay);
                     $scope.test = "overlay created";
                     overlay.overlay.addListener('click', onOverlayClicked);
+                    $gMapService.center(overlay.overlay);
                 });
             }
 
             function onOverlayClicked(overlay) {
                 $scope.$apply(function() {
-                    log('overlay clicked', overlay);
+                    log('overlay clicked', overlay.latLng);
                     $scope.test = "overlay clicked";
+                    $gMapService.center(overlay.latLng);
                 });
             }
 

@@ -78,6 +78,13 @@ angular.module('starter.services')
                             lng: obj.position.lng(),
                         };
                         map.panTo(myLatlng);
+                    } else if (obj.lat && typeof obj.lat === 'function') {
+                        log('center on overlay: marker: ', obj);
+                        var myLatlng = {
+                            lat: obj.lat(),
+                            lng: obj.lng(),
+                        };
+                        map.panTo(myLatlng);
                     } else {
                         log('center on specific position not implemented');
                     }
