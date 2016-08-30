@@ -1,6 +1,7 @@
 angular.module('starter.controllers')
     .controller("MapCtrl",
-        function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation, $logService, $gMapService, $timeout) {
+        function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation,
+            $logService, $gMapService, $timeout, $optionsService, $itemService) {
 
             var log = $logService.log;
             var map;
@@ -9,7 +10,19 @@ angular.module('starter.controllers')
             var defaultPosition = $acgoSettings.mapDefaultPosition();
             var geolocationOptions = $acgoSettings.geolocation();
 
-            $scope.test = "-";
+            $scope.editing = $itemService.empty;
+
+            function openPanel() {
+                $scope.showPanel = true;
+                $gMapService.checkResize();
+            }
+
+            function closePanel() {
+                $scope.showPanel = false;
+                $gMapService.checkResize();
+            }
+            $scope.closePanel = closePanel;
+
 
             $scope.centerMap = function(pos) {
                 $gMapService.center();
@@ -41,6 +54,9 @@ angular.module('starter.controllers')
                     $scope.test = "overlay created";
                     overlay.overlay.addListener('click', onOverlayClicked);
                     $gMapService.center(overlay.overlay);
+                    $scope.editing = $itemService.empty;
+                    $scope.editing.overlayType = overlay.type;
+                    openPanel();
                 });
             }
 
@@ -49,12 +65,63 @@ angular.module('starter.controllers')
                     log('overlay clicked', overlay.latLng);
                     $scope.test = "overlay clicked";
                     $gMapService.center(overlay.latLng);
+                    openPanel();
                 });
             }
 
             // try to get the current position
             // and recenter the map
             $gMapService.center();
+
+            $scope.takePicture = function() {
+
+                var options = $acgoSettings.camera();
+                log('camera options', options, true);
+
+                $cordovaCamera.getPicture(options).then(function(imageDataURL) {
+
+                    // show picture in UI
+                    $scope.imgURI = "data:image/jpeg;base64," + imageDataURL;
+
+                    if (imageDataURL && confirm('test upload?')) {
+
+                        log('attempting upload', imageDataURL, true)
+                        $scope.uploading = true;
+                        $scope.uploadUrl = '';
+
+                        $http({
+                            method: 'POST',
+                            url: Backand.getApiUrl() + '/1/objects/action/Test/1',
+                            params: {
+                                name: 'files',
+                                parameters: {
+                                    filename: 'test.jpg',
+                                }
+                            },
+                            config: {
+                                ignoreError: true
+                            },
+                            data: {
+                                filedata: imageDataURL
+                            }
+                        }).then(function(d) {
+                                log('camera upload success', d, true);
+                                $scope.uploadResult = d;
+                                $scope.uploadUrl = d.url;
+                                $scope.uploading = false;
+                            },
+                            function(err) {
+                                log('camera upload error', err, true);
+                                $scope.uploadResult = err;
+                                $scope.uploading = false;
+                            });
+                    }
+
+                }, function(err) {
+                    log('error getting picture', err, true);
+                    // An error occured. Show a message to the user
+                });
+            }
 
 
             // initalize the controller

@@ -126,12 +126,13 @@ angular.module('starter.services')
             }
 
             // check resize
-            function checkResize() {
+            function checkResize(callback) {
                 // waits for ui to catch up
                 log('will resize in 1 sec...')
                 setTimeout(function() {
                     google.maps.event.trigger(map, "resize");
                     log('resized');
+                    if (callback) callback();
                 }, 1000);
             }
 

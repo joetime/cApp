@@ -5,13 +5,59 @@
     </div>-->
 
     <div class="row">
-        <div class="col">
+        <div class="col" ng-class="{ 'col-67': showPanel }">
             <!-- THE MAP!-->
             <div id="map"></div>
             <!-- tool bar -->
             <div id="toolbar">
                 <button type="button" class="button button-positive" ng-click="centerMap()">Center</button>
                 <button type="button" class="button button-positive" ng-click="centerMap()">{{test}}</button>
+            </div>
+        </div>
+        <div class="col" ng-show="showPanel">
+            <button type="button" class="button" ng-click="closePanel()">Close</button>
+            <br />
+            <div class="list">
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                    Type
+                    </div>
+                    <select>
+                    <option selected>
+                        <i class="icon ion-record assertive"></i>Failure</option>
+                    <option>
+                        <i class="icon ion-record positive"></i>ADA</option>
+                    <option>
+                        <i class="icon ion-record balanced"></i>Core Sample</option>
+                    <option>
+                        <i class="icon ion-record stable"></i>Other</option>
+                    </select>
+                </label>
+                <div class="item item-input">
+                    <input type="text" placeholder="Label" />
+                </div>
+
+                <div class="item item-input">
+                    <textarea placeholder="Comments"></textarea>
+                </div>
+                <div class="item item-input">
+                    Immediate Need
+                    <label class="toggle toggle-assertive">
+                    <input type="checkbox">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                    </label>
+                </div>
+                <div class="item divider">
+                    Photos
+                </div>
+                <div class="item item-input">
+                    <a ng-click="takePicture()">
+                        <img ng-show="editing.photo == null" ng-src="http://placehold.it/240x160" />
+                    </a>
+                </div>
+
             </div>
         </div>
     </div>
