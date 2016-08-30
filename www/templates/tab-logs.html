@@ -1,12 +1,12 @@
 <ion-view view-title="Logs">
     <ion-content class="padding">
         <ion-list>
-            <ion-item ng-repeat="log in logs | limit:25 track by $index" ng-click="expand=!expand">
+            <ion-item ng-repeat="log in logs track by $index" ng-click="expand=!expand">
                 <i ng-show="log.object!=undefined && !expand" class="ion-arrow-right-b"></i>
                 <i ng-show="log.object!=undefined && expand" class="ion-arrow-down-b"></i>
                 <b>{{log.msg}}</b>
                 <br />
-                <span ng-show="expand" style="font-size:7px">{{log.object}}</span>
+                <span ng-show="expand" style="font-size:7px">{{log.object | safeJson}}</span>
             </ion-item>
         </ion-list>
 

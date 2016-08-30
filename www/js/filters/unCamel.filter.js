@@ -16,4 +16,4 @@ angular.module('starter').filter('unCamel', function() {
         };
         return newStr;
     }
-})
+});

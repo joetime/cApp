@@ -39,7 +39,7 @@ angular.module('starter',
 
         return function(exception, cause) {
 
-          // get the audit service
+          // get the error logging service
           var $errorService = $injector.get("$errorService");
 
           // get the current url
@@ -48,13 +48,15 @@ angular.module('starter',
           // log to server
           $errorService.log(exception, url, cause);
 
-          // pass on the error (does not resolve, keeps throwing)
-          $delegate(exception, cause);
-
           console.info('Logged error to server:', {
             exception: exception,
             cause: cause
           });
+
+          // pass on the error (does not resolve, keeps throwing)
+          $delegate(exception, cause);
+
+
         };
       }
     ]);

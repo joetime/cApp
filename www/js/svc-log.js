@@ -21,6 +21,7 @@ angular.module('starter.services').service('$logService', function($errorService
 
     // add log to the list, then call all the listeners
     function log(msg, obj, server) {
+
         if (obj)
             console.log(msg, obj);
         else
@@ -32,14 +33,22 @@ angular.module('starter.services').service('$logService', function($errorService
             object: obj
         });
 
+        // limit the list to 25 items
+        if (logs.length > 25)
+            logs = logs.splice(0, 25);
+
         // let everyone know the log has been updated
         angular.forEach(listeners, function(listener) {
             listener(logs);
         });
 
         // try logging to server
-        if (server) {
-            $errorService.logOther(msg, obj);
+        try {
+            if (server) {
+                $errorService.logOther(msg, obj);
+            }
+        } catch (err) {
+            // nothing
         }
     }
 

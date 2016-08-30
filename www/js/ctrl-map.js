@@ -27,7 +27,7 @@ angular.module('starter.controllers')
                     drawingMode: true,
                     drawingModeDisableAfterCreate: true
                 });
-                // on map click
+                // on map click 
                 map.addListener('click', function($event) {
                     log('map clicked: ', $event);
                 });

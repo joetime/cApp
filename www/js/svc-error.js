@@ -7,6 +7,7 @@ angular.module('starter.services')
 
             isTest = isTest || false;
 
+            //console.info('stringifying...')
             var exString = 'JSON:' + JSON.stringify(ex);
 
             var record = {
