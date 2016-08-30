@@ -1,20 +1,22 @@
 <ion-content id="map-content" scroll="false">
-
-
-    <div class="bar bar-header">
+    <!--<div class="bar bar-header">
         <h1 class="title">Map</h1>
         <button class="button" ng-click="centerMap()">Recenter</button>
+    </div>-->
+
+    <div class="row">
+        <div class="col">
+            <!-- THE MAP!-->
+            <div id="map"></div>
+            <!-- tool bar -->
+            <div id="toolbar">
+                <button type="button" class="button button-positive" ng-click="centerMap()">Center</button>
+                <button type="button" class="button button-positive" ng-click="centerMap()">{{test}}</button>
+            </div>
+        </div>
     </div>
 
-    <!-- FORM FOR EDITING OBJECTS -->
-    <ion-pane id="form-pane" ng-if="showForm">
-        <button type="button" ng-click="hideForm()">
-            <i class="ion-chevron-right"></i>
-            </button> hello world!
-    </ion-pane>
 
-    <!-- THE MAP!-->
-    <div id="map"></div>
 
 </ion-content>
 </ion-view>

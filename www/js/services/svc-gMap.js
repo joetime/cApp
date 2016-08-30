@@ -36,6 +36,11 @@ angular.module('starter.services')
                     //return null;
                 }
 
+                // listens for resize events
+                //$(document).ready(function() {
+
+                //});
+
                 // set up drawing mode if needed
                 var drawingMode = params.drawingMode || false;
                 if (drawingMode) {
@@ -55,7 +60,12 @@ angular.module('starter.services')
             }
 
             // center the map on something
-            function center(obj) {
+            function center(obj, callback) {
+
+                if (typeof obj === 'function') {
+                    callback = obj;
+                    obj = undefined;
+                }
 
                 if (obj) {
                     // passed a map object
@@ -108,10 +118,21 @@ angular.module('starter.services')
                 });
             }
 
+            // check resize
+            function checkResize() {
+                // waits for ui to catch up
+                log('will resize in 1 sec...')
+                setTimeout(function() {
+                    google.maps.event.trigger(map, "resize");
+                    log('resized');
+                }, 1000);
+            }
+
             return {
                 init: init,
                 center: center,
-                addDrawingListener: addDrawingListener
+                addDrawingListener: addDrawingListener,
+                checkResize: checkResize
             }
         }
     ]);

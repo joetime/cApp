@@ -1,24 +1,16 @@
-#map-content {
-    padding-top: 70px;
+#map-content .row {
+    height: 100%;
+    padding: 0;
 }
 
-#map-content .scroll {
-    height: 100%
+#toolbar {
+    /*z-index: 100;*/
+    position: absolute;
+    bottom: 7px;
+    right: 7px;
+    /*margin: auto;*/
 }
 
 #map-content #map {
     height: 100%;
-    width: 100%;
-    background-color: steelblue;
-}
-
-#map-content #form-pane {
-    width: 33%;
-    height: 80%;
-    top: 10%;
-    bottom: 10%;
-    position: fixed;
-    /* right: 0; */
-    left: 67%;
-    opacity: .8;
 }

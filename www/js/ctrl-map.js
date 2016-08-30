@@ -1,6 +1,6 @@
 angular.module('starter.controllers')
     .controller("MapCtrl",
-        function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation, $logService, $gMapService) {
+        function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation, $logService, $gMapService, $timeout) {
 
             var log = $logService.log;
             var map;
@@ -9,11 +9,7 @@ angular.module('starter.controllers')
             var defaultPosition = $acgoSettings.mapDefaultPosition();
             var geolocationOptions = $acgoSettings.geolocation();
 
-            // form starts hidden
-            $scope.showForm = false;
-            $scope.hideForm = function() {
-                $scope.showForm = false;
-            }
+            $scope.test = "-";
 
             $scope.centerMap = function(pos) {
                 $gMapService.center();
@@ -29,31 +25,35 @@ angular.module('starter.controllers')
                 });
                 // on map click 
                 map.addListener('click', function($event) {
-                    log('map clicked: ', $event);
+                    $scope.$apply(function() {
+                        log('map clicked: ', $event);
+                        $scope.test = "map clicked";
+                    });
                 });
 
                 // on drawing object created
-                $gMapService.addDrawingListener(function(drawingObject) {
-                    log('drawing object created:', drawingObject.type);
+                $gMapService.addDrawingListener(onOverlayCreated);
+            }
 
-                    drawingObject.overlay.addListener('click', function($event) {
-                        log('marker clicked: ', $event);
-                        openAndCenterObject($event);
-                    });
-
-                    openAndCenterObject(drawingObject.overlay);
+            function onOverlayCreated(overlay) {
+                $scope.$apply(function() {
+                    log('overlay created', overlay);
+                    $scope.test = "overlay created";
+                    overlay.overlay.addListener('click', onOverlayClicked);
                 });
-
-                // try to get the current position
-                // and recenter the map
-                $gMapService.center();
             }
 
-            function openAndCenterObject(obj) {
-                $gMapService.center(obj);
-                $scope.showForm = true;
-                //$scope.$apply();
+            function onOverlayClicked(overlay) {
+                $scope.$apply(function() {
+                    log('overlay clicked', overlay);
+                    $scope.test = "overlay clicked";
+                });
             }
+
+            // try to get the current position
+            // and recenter the map
+            $gMapService.center();
+
 
             // initalize the controller
             init();
