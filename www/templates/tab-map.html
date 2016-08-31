@@ -1,24 +1,25 @@
-<ion-content id="map-content" scroll="false">
-    <!--<div class="bar bar-header">
+<ion-view>
+    <ion-content id="map-content" scroll="false">
+        <!--<div class="bar bar-header">
         <h1 class="title">Map</h1>
         <button class="button" ng-click="centerMap()">Recenter</button>
     </div>-->
 
-    <div class="row">
-        <div class="col" ng-class="{ 'col-67': showPanel }">
-            <!-- THE MAP!-->
-            <div id="map"></div>
-            <!-- tool bar -->
-            <div id="toolbar">
-                <button type="button" class="button button-positive" ng-click="centerMap()">Center</button>
-                <button type="button" class="button button-positive" ng-click="centerMap()">{{test}}</button>
+        <div class="row">
+            <div class="col" ng-class="{ 'col-67': showPanel }">
+                <!-- THE MAP!-->
+                <div id="map"></div>
+                <!-- tool bar -->
+                <div id="toolbar">
+                    <button type="button" class="button button-positive" ng-click="centerMap()">Center</button>
+                    <button type="button" class="button button-positive" ng-click="centerMap()">{{test}}</button>
+                </div>
             </div>
-        </div>
-        <div class="col" ng-show="showPanel">
-            <button type="button" class="button" ng-click="closePanel()">Close</button>
-            <br />
-            <div class="list">
-                <label class="item item-input item-select">
+            <div class="col" ng-show="showPanel">
+                <button type="button" class="button" ng-click="closePanel()">Close</button>
+                <br />
+                <div class="list">
+                    <label class="item item-input item-select">
                     <div class="input-label">
                     Type
                     </div>
@@ -33,36 +34,33 @@
                         <i class="icon ion-record stable"></i>Other</option>
                     </select>
                 </label>
-                <div class="item item-input">
-                    <input type="text" placeholder="Label" />
-                </div>
+                    <div class="item item-input">
+                        <input type="text" placeholder="Label" />
+                    </div>
 
-                <div class="item item-input">
-                    <textarea placeholder="Comments"></textarea>
-                </div>
-                <div class="item item-input">
-                    Immediate Need
-                    <label class="toggle toggle-assertive">
+                    <div class="item item-input">
+                        <textarea placeholder="Comments"></textarea>
+                    </div>
+                    <div class="item item-input">
+                        Immediate Need
+                        <label class="toggle toggle-assertive">
                     <input type="checkbox">
                     <div class="track">
                         <div class="handle"></div>
                     </div>
                     </label>
-                </div>
-                <div class="item divider">
-                    Photos
-                </div>
-                <div class="item item-input">
-                    <a ng-click="takePicture()">
-                        <img ng-show="editing.photo == null" ng-src="http://placehold.it/240x160" />
-                    </a>
-                </div>
+                    </div>
+                    <div class="item divider">
+                        Photos
+                    </div>
+                    <div class="item item-input">
+                        <a ng-click="takePicture()">
+                            <img ng-show="editing.photo == null" ng-src="http://placehold.it/240x160" />
+                        </a>
+                    </div>
 
+                </div>
             </div>
         </div>
-    </div>
-
-
-
-</ion-content>
+    </ion-content>
 </ion-view>
