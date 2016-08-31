@@ -1,7 +1,99 @@
 <div>
-    <button type="button" class="button button-block" ng-click="openClick()">Open</button>
-    <button type="button" class="button button-block" ng-click="centerMap()">Center Map on my location</button>
+    <!--<button type="button" class="button" ng-click="openClick()">Test Open</button>-->
+
+
+    <!-- List of items --
+    <div ng-show="!editingItem" class="list">
+        <div class="item header">Items</div>
+        <div class="item" ng-repeat="item in items | orderBy:'id':true ">
+        </div>
+    </div>-->
+
+    <!-- Edit item -->
+    <div class="list" ng-if="editingItem">
+        <div class="item item-input">
+            <input type="text" placeholder="label" ng-model="editingItem.label" />
+        </div>
+        <label class="item item-input item-select">
+            <div class="input-label">
+            Type
+            </div>
+            <select ng-model="editingItem.type">
+                <option selected>Failure</option>
+                <option>ADA</option>
+                <option>Core Sample</option>
+                <option>Inventory</option>
+                <option>Other</option>
+            </select>
+        </label>
+        <label class="item item-input item-select">
+            <div class="input-label">
+            Material
+            </div>
+            <select>
+                <option selected>Asphalt</option>
+                <option>Concrete</option>
+                <option>Other</option>
+            </select>
+        </label>
+        <div class="item item-input">
+            <input type="number" placeholder="Quantity" ng-model="editingItem.quantity" />
+            <span class="padding">{{editingItem.unit}}</span>
+        </div>
+        <div class="item item-toggle">
+            Immediate Need
+            <label class="toggle toggle-assertive">
+            <input type="checkbox" ng-model="editingItem.immediateNeed">
+            <div class="track">
+                <div class="handle"></div>
+            </div>
+            </label>
+        </div>
+        <label class="item item-input item-select">
+            <div class="input-label">
+            Cause
+            </div>
+            <select ng-model="editingItem.cause">
+                <option selected></option>
+                <option>Subgrade water intrusion due to cracking</option>
+                <option>Differential settlement</option>
+                <option>Age, Traffic, Weather</option>
+                <option>Settling</option>
+                <option>Other</option>
+            </select>
+        </label>
+    </div>
+    <div class="padding" ng-if="editingItem" style="text-align:center;">
+        <img src="{{imgURI}}" ng-show="imgURI" width="100%" />
+        <img src="http://placehold.it/480x320?text=open camera" ng-show="!imgURI" width="45%" ng-click="openCamera()" />
+        <img src="http://placehold.it/480x320?text=open camera" ng-show="!imgURI" width="45%" ng-click="openCamera()" />
+    </div>
+    <div ng-if="editingItem" class="padding button-bar">
+        <button class="button button-stable" ng-click="deleteItem()">Delete</button>
+        <button class="button button-positive" ng-click="saveItem()">Save</button>
+    </div>
+    <div ng-if="editingItem" class="padding meta">
+        uniqueId: {{editingItem.id}}<br /> lastModified: {{editingItem.timeStamp | local }} <br /> ({{editingItem.timeStamp | fromNow }})</br>
+        {{editingItem.timeStamp}}
+    </div>
+
+
+
+
+    <!--<span ng-show="key != '__metadata'">
+        {{key}}:{{val}}
+        </span>-->
+</div>
+
+<!-- Edit photos -->
+
+<div id="toolbar-anchor" class="text-right padding">
     <!--<button type="button" class="button button-block" ng-click="openCamera()">Camera</button>-->
-    <img src="{{imgURI}}" ng-show="imgURI" width="100%" />
-    <img src="http://placehold.it/480x320?text=open camera" ng-show="!imgURI" width="100%" ng-click="openCamera()" />
+
+    <button type="button" class="button button-calm" ng-click="centerMap()">
+            <i class="ion ion-navigate"></i>
+            <!--<i class="ion ion-load-d"></i>-->
+        </button>
+</div>
+
 </div>

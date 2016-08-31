@@ -9,3 +9,9 @@
 #map-content #map {
     height: 100%;
 }
+
+#toolbar-anchor {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}

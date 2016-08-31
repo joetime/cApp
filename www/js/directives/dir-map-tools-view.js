@@ -1,10 +1,12 @@
 angular.module('starter')
-    .directive('mapToolsView', ['$logService', '$commService', '$acgoSettings', '$cordovaCamera',
+    .directive('mapToolsView', ['$logService', '$commService', '$acgoSettings', '$cordovaCamera', '$itemService', '$window',
 
-        function($logService, $commService, $acgoSettings, $cordovaCamera) {
+        function($logService, $commService, $acgoSettings, $cordovaCamera, $itemService, $window) {
 
             var log = $logService.log;
             log('mapToolsView directive init');
+
+            var pristineItem = null;
 
             return {
                 restrict: 'E',
@@ -14,17 +16,26 @@ angular.module('starter')
             }
 
             function link($scope) {
-                $scope.openClick = function(id) {
-                    if (!id) id = 0;
-                    log('openClick()');
-                    $commService.emit('openItem', id);
-                }
-                $scope.centerMap = function(p) {
+                $scope.openClick = openClick;
+                $scope.centerMap = centerMap;
+                $scope.openCamera = openCamera;
+
+                $scope.saveItem = saveItem;
+                $scope.deleteItem = deleteItem;
+
+                $commService.listen('editItem', function(item) {
+                    pristineItem = item;
+                    $scope.editingItem = item;
+                })
+
+                function centerMap(p) {
+                    $scope.centering = true;
                     if (!p) p = {};
-                    log('centerMap()');
+
                     $commService.emit('centerMap', p);
                 }
-                $scope.openCamera = function() {
+
+                function openCamera() {
                     var options = $acgoSettings.camera();
                     log('camera options', options, true);
 
@@ -33,17 +44,40 @@ angular.module('starter')
 
                         if (imageDataURL) {
                             // picture received!
-                            $scope.imgURI = "data:image/jpeg;base64," + imageDataURL;
+                            $scope.imageURI = "data:image/jpeg;base64," + imageDataURL;
                         } else {
-                            $scope.imgURI = null;
+                            $scope.imageURI = null;
                         }
                     }, function(err) {
                         // An error occured. 
-                        $scope.imgURI = null;
+                        $scope.imageURI = null;
                         log('error getting picture', err, true);
                     });
                 }
+
+                function saveItem() {
+                    $itemService.save($scope.editingItem);
+                }
+
+                function deleteItem() {
+                    if ($window.confirm('Are you sure?')) {
+                        $scope.editingItem.deleted = true;
+                        $itemService.save($scope.editingItem)
+                        $scope.editingItem = null;
+                    };
+                }
             }
+
+
+
+
+            function openClick(id) {
+                if (!id) id = 0;
+                log('openClick()');
+                $commService.emit('openItem', id);
+            }
+
+
 
         }
     ]);
