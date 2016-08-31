@@ -1,0 +1,7 @@
+<div>
+    <button type="button" class="button button-block" ng-click="openClick()">Open</button>
+    <button type="button" class="button button-block" ng-click="centerMap()">Center Map on my location</button>
+    <!--<button type="button" class="button button-block" ng-click="openCamera()">Camera</button>-->
+    <img src="{{imgURI}}" ng-show="imgURI" width="100%" />
+    <img src="http://placehold.it/480x320?text=open camera" ng-show="!imgURI" width="100%" ng-click="openCamera()" />
+</div>
