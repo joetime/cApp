@@ -4,7 +4,7 @@ angular.module('starter.services').service('$itemService', function($logService)
     log('$itemService init');
 
     var empty = {
-        label: '',
+        label: 'new item',
         overlayType: '',
         overlay: {},
         immediate: false,

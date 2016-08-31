@@ -8,7 +8,7 @@ angular.module('starter.controllers', [])
   })
 
 .controller('ChatsCtrl',
-  function($scope, Chats, $logService) {
+  function($scope, Chats, $logService, $window) {
     var log = $logService.log;
     log('ChatsCtrl init');
 
@@ -24,6 +24,12 @@ angular.module('starter.controllers', [])
     $scope.remove = function(chat) {
       Chats.remove(chat);
     };
+
+    $scope.chatClick = function(id) {
+      log('navigating to chat details page...');
+      $window.location.href = '#/tab/chats/' + id;
+    }
+
   })
 
 

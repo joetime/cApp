@@ -43,6 +43,15 @@ angular.module('starter')
                     }
                 }
             })
+            .state('tab.map-detail', {
+                url: '/map/:itemId',
+                views: {
+                    'tab-map': {
+                        templateUrl: 'templates/map-detail.html',
+                        controller: 'MapDetailCtrl'
+                    }
+                }
+            })
 
         .state('tab.chats', {
                 url: '/chats',

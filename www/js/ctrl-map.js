@@ -1,7 +1,8 @@
 angular.module('starter.controllers')
     .controller("MapCtrl",
+
         function($scope, $acgoSettings, $cordovaCamera, $cordovaGeolocation,
-            $logService, $gMapService, $timeout, $optionsService, $itemService) {
+            $logService, $gMapService, $timeout, $optionsService, $itemService, $window) {
 
             var log = $logService.log;
             var map;
@@ -10,19 +11,13 @@ angular.module('starter.controllers')
             var defaultPosition = $acgoSettings.mapDefaultPosition();
             var geolocationOptions = $acgoSettings.geolocation();
 
-            $scope.editing = $itemService.empty;
-
-            function openPanel() {
-                $scope.showPanel = true;
-                $gMapService.checkResize();
+            $scope.openItem = function(id) {
+                console.log('openItem')
+                if (!id) id = 0;
+                var nav = '#/tab/map/' + id;
+                log('nav to: ', nav)
+                $window.location.href = nav;
             }
-
-            function closePanel() {
-                $scope.showPanel = false;
-                $gMapService.checkResize();
-            }
-            $scope.closePanel = closePanel;
-
 
             $scope.centerMap = function(pos) {
                 $gMapService.center();
@@ -46,6 +41,9 @@ angular.module('starter.controllers')
 
                 // on drawing object created
                 $gMapService.addDrawingListener(onOverlayCreated);
+
+                // so we know we've already initialized
+                return true;
             }
 
             function onOverlayCreated(overlay) {
@@ -125,6 +123,16 @@ angular.module('starter.controllers')
 
 
             // initalize the controller
-            init();
+            var initialized;
+            if (!initialized)
+                initialized = init();
 
         })
+
+.controller('MapDetailCtrl',
+    function($scope, $stateParams, $itemService, $logService) {
+        var log = $logService.log;
+        log('MapDetailCtrl init');
+
+        $scope.item = $itemService.empty;
+    })

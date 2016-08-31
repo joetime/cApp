@@ -1,0 +1,57 @@
+<ion-view view-title="{{item.label}}">
+
+    <ion-content class="padding">
+
+        <a href="#/tab/map">back</a>
+        <br />
+
+        <img ng-src="{{item.photo}}" style="width: 64px; height: 64px">
+        <p>
+            {{item.label}}
+        </p>
+
+        <br />
+        <div class="list">
+            <label class="item item-input item-select">
+                    <div class="input-label">
+                    Type
+                    </div>
+                    <select ng-model="item.type">
+                    <option selected>
+                        <i class="icon ion-record assertive"></i>Failure</option>
+                    <option>
+                        <i class="icon ion-record positive"></i>ADA</option>
+                    <option>
+                        <i class="icon ion-record balanced"></i>Core Sample</option>
+                    <option>
+                        <i class="icon ion-record stable"></i>Other</option>
+                    </select>
+                </label>
+            <div class="item item-input">
+                <input type="text" placeholder="Label" ng-model="item.label" />
+            </div>
+
+            <div class=" item item-input">
+                <textarea placeholder="Comments" ng-model="item.comments"></textarea>
+            </div>
+            <div class="item item-input">
+                Immediate Need
+                <label class="toggle toggle-assertive">
+                    <input type="checkbox" ng-model="item.immediateNeed">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                    </label>
+            </div>
+            <div class="item divider">
+                Photos
+            </div>
+            <div class="item item-input">
+                <a ng-click="takePicture()">
+                    <img ng-show="item.photo==null" ng-src="http://placehold.it/240x160" />
+                </a>
+            </div>
+
+        </div>
+    </ion-content>
+</ion-view>
