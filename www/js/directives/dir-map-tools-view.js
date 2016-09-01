@@ -37,10 +37,17 @@ angular.module('starter')
                 })
 
                 $scope.allItems = [];
-                $itemService.get({}, function(lst, meta) {
-                    $scope.totalRows = meta.totalRows;
-                    $scope.allItems = lst;
-                });
+
+                var initialized;
+
+                function initList() {
+                    $itemService.get({}, function(lst, meta) {
+                        $scope.totalRows = meta.totalRows;
+                        $scope.allItems = lst;
+                    });
+                    initialized = true;
+                }
+                if (!initialized) initList();
 
                 $scope.listItemClick = function(item) {
                     $commService.emit('editItem', item);
@@ -48,6 +55,7 @@ angular.module('starter')
 
                 $scope.closeItem = function(item) {
                     $scope.editingItem = null;
+                    initList();
                 };
 
                 function centerMap(p) {
@@ -84,7 +92,10 @@ angular.module('starter')
                 function deleteItem() {
                     if ($window.confirm('Are you sure?')) {
                         $scope.editingItem.deleted = true;
-                        $itemService.save($scope.editingItem)
+                        $itemService.save($scope.editingItem, function() {
+                            log('refreshing list');
+                            initList();
+                        })
                         $scope.editingItem = null;
                     };
                 }

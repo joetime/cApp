@@ -66,6 +66,12 @@ angular.module('starter.services').service('$itemService',
                 operator: "equals",
                 value: false
             });
+            if (!params.sort) {
+                params.sort = [{
+                    "fieldName": "id",
+                    "order": "desc"
+                }];
+            }
 
             // send request
             $http({
