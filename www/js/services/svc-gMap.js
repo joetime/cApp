@@ -9,6 +9,7 @@ angular.module('starter.services')
             var drawingManager;
             var defaultPosition = $acgoSettings.mapDefaultPosition();
             var geolocationOptions = $acgoSettings.geolocation();
+            var drawingControlsVisible = false;
 
             // initalize map. returns map to caller
             function init(params) {
@@ -33,13 +34,7 @@ angular.module('starter.services')
                     log('map created!')
                 } else {
                     log('map not created!!');
-                    //return null;
                 }
-
-                // listens for resize events
-                //$(document).ready(function() {
-
-                //});
 
                 // set up drawing mode if needed
                 var drawingMode = params.drawingMode || false;
@@ -47,7 +42,7 @@ angular.module('starter.services')
                     log('initializing drawingManager')
                     drawingManager = new google.maps.drawing.DrawingManager({
                         //drawingMode: google.maps.drawing.OverlayType.MARKER,
-                        drawingControl: true,
+                        drawingControl: drawingControlsVisible,
                         drawingControlOptions: {
                             position: google.maps.ControlPosition.TOP_CENTER,
                             drawingModes: ['marker', 'polygon', 'polyline'] // circle', 'polygon', 'polyline', 'rectangle']
@@ -136,11 +131,36 @@ angular.module('starter.services')
                 }, 1000);
             }
 
+            function currentDrawingMode() {
+                //log('getting current mode', drawingManager.drawingMode);
+                return drawingManager.drawingMode;
+            }
+
+            function setDrawingMode(mode) {
+
+                console.log('current mode: ', drawingManager.drawingMode);
+                var MODE;
+
+                // toggle OUT of the current mode
+                if (mode == drawingManager.drawingMode)
+                    MODE = null;
+
+                else if (mode == 'marker') MODE = google.maps.drawing.OverlayType.MARKER;
+                else if (mode == 'polyline') MODE = google.maps.drawing.OverlayType.POLYLINE;
+                else if (mode == 'polygon') MODE = google.maps.drawing.OverlayType.POLYGON;
+
+                drawingManager.setOptions({
+                    drawingMode: MODE
+                });
+            }
+
             return {
                 init: init,
                 center: center,
                 addDrawingListener: addDrawingListener,
-                checkResize: checkResize
+                checkResize: checkResize,
+                setDrawingMode: setDrawingMode,
+                currentDrawingMode: currentDrawingMode
             }
         }
     ]);

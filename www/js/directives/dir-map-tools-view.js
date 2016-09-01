@@ -1,7 +1,7 @@
 angular.module('starter')
-    .directive('mapToolsView', ['$logService', '$commService', '$acgoSettings', '$cordovaCamera', '$itemService', '$window',
+    .directive('mapToolsView', ['$logService', '$commService', '$acgoSettings', '$cordovaCamera', '$itemService', '$window', '$gMapService',
 
-        function($logService, $commService, $acgoSettings, $cordovaCamera, $itemService, $window) {
+        function($logService, $commService, $acgoSettings, $cordovaCamera, $itemService, $window, $gMapService) {
 
             var log = $logService.log;
             log('mapToolsView directive init');
@@ -17,9 +17,17 @@ angular.module('starter')
 
             function link($scope) {
                 $scope.openClick = openClick;
-                $scope.centerMap = centerMap;
-                $scope.openCamera = openCamera;
 
+                $scope.mapModeClick = function(mode) {
+                    $commService.emit('mapDrawingMode', mode);
+                }
+                $scope.currentMapMode = function() {
+                    //console.log('get map mode...')
+                    return $gMapService.currentDrawingMode();
+                }
+                $scope.centerMap = centerMap;
+
+                $scope.openCamera = openCamera;
                 $scope.saveItem = saveItem;
                 $scope.deleteItem = deleteItem;
 
@@ -27,6 +35,20 @@ angular.module('starter')
                     pristineItem = item;
                     $scope.editingItem = item;
                 })
+
+                $scope.allItems = [];
+                $itemService.get({}, function(lst, meta) {
+                    $scope.totalRows = meta.totalRows;
+                    $scope.allItems = lst;
+                });
+
+                $scope.listItemClick = function(item) {
+                    $commService.emit('editItem', item);
+                };
+
+                $scope.closeItem = function(item) {
+                    $scope.editingItem = null;
+                };
 
                 function centerMap(p) {
                     $scope.centering = true;
@@ -68,17 +90,11 @@ angular.module('starter')
                 }
             }
 
-
-
-
             function openClick(id) {
                 if (!id) id = 0;
                 log('openClick()');
                 $commService.emit('openItem', id);
             }
-
-
-
         }
     ]);
 

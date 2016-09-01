@@ -1,13 +1,16 @@
 <div>
     <!--<button type="button" class="button" ng-click="openClick()">Test Open</button>-->
 
-
-    <!-- List of items --
+    <!-- List of items -->
     <div ng-show="!editingItem" class="list">
-        <div class="item header">Items</div>
-        <div class="item" ng-repeat="item in items | orderBy:'id':true ">
+        <div class="item header">{{totalRows}} Items</div>
+        <div class="item" ng-repeat="item in allItems | orderBy:'id':true track by item.id" ng-click="listItemClick(item)">
+            <i ng-if="item.overlayType == 'marker'" class="ion ion-ios-location"></i>
+            <i ng-if="item.overlayType == 'polyline'" class="ion ion-android-share-alt"></i>
+            <i ng-if="item.overlayType == 'polygon'" class="ion ion-android-checkbox-outline-blank" style="transform: rotate(-15deg);"></i>
+            <span class="padding">{{item.label}}</span>
         </div>
-    </div>-->
+    </div>
 
     <!-- Edit item -->
     <div class="list" ng-if="editingItem">
@@ -64,31 +67,39 @@
         </label>
     </div>
     <div class="padding" ng-if="editingItem" style="text-align:center;">
-        <img src="{{imgURI}}" ng-show="imgURI" width="100%" />
-        <img src="http://placehold.it/480x320?text=open camera" ng-show="!imgURI" width="45%" ng-click="openCamera()" />
-        <img src="http://placehold.it/480x320?text=open camera" ng-show="!imgURI" width="45%" ng-click="openCamera()" />
+        <img ng-src="editingItem.photoUrl1" ng-if="editingItem.photoUrl1" width="100%" />
+        <img ng-src="editingItem.photoUrl2" ng-if="editingItem.photoUrl2" width="100%" />
+        <img src="http://placehold.it/480x320?text=open camera" ng-show="!editingItem.photoUrl1" width="45%" ng-click="openCamera()" />
+        <img src="http://placehold.it/480x320?text=open camera" ng-show="!editingItem.photoUrl2" width="45%" ng-click="openCamera()" />
     </div>
     <div ng-if="editingItem" class="padding button-bar">
-        <button class="button button-stable" ng-click="deleteItem()">Delete</button>
-        <button class="button button-positive" ng-click="saveItem()">Save</button>
+        <button class="button button-assertive button-outline" ng-click="deleteItem()">
+            <i class="ion ion-ios-trash-outline"></i>
+        </button>
+        <button class="button button-dark button-outline" ng-click="closeItem()">Close</button>
+        <button class="button button-positive button-outline" ng-click="saveItem()">Save</button>
     </div>
     <div ng-if="editingItem" class="padding meta">
-        uniqueId: {{editingItem.id}}<br /> lastModified: {{editingItem.timeStamp | local }} <br /> ({{editingItem.timeStamp | fromNow }})</br>
-        {{editingItem.timeStamp}}
+        uniqueId: {{editingItem.id}}
+        <br /> lastModified: {{editingItem.timeStamp }}
     </div>
 
-
-
-
-    <!--<span ng-show="key != '__metadata'">
-        {{key}}:{{val}}
-        </span>-->
 </div>
 
 <!-- Edit photos -->
 
 <div id="toolbar-anchor" class="text-right padding">
     <!--<button type="button" class="button button-block" ng-click="openCamera()">Camera</button>-->
+
+    <button type="button" class="button" ng-class="{ 'button-balanced': currentMapMode() == 'marker'}" ng-click="mapModeClick('marker')">
+        <i class="ion ion-ios-location"></i>
+    </button>
+    <button type="button" class="button" ng-class="{ 'button-balanced': currentMapMode() == 'polyline'}" ng-click="mapModeClick('polyline')">
+        <i class="ion ion-android-share-alt"></i>
+    </button>
+    <button type="button" class="button" ng-class="{ 'button-balanced': currentMapMode() == 'polygon'}" ng-click="mapModeClick('polygon')">
+        <i class="ion ion-android-checkbox-outline-blank" style="transform: rotate(-15deg);"></i>
+    </button>
 
     <button type="button" class="button button-calm" ng-click="centerMap()">
             <i class="ion ion-navigate"></i>

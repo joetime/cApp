@@ -26,6 +26,9 @@ angular.module('starter.controllers')
                 $gMapService.center();
             })
 
+            $commService.listen('mapDrawingMode', function(mode) {
+                $gMapService.setDrawingMode(mode);
+            });
 
             // initalize the map. returns true so it doesn't fire again
             function init() {
@@ -61,9 +64,6 @@ angular.module('starter.controllers')
                     // center on the item
                     $gMapService.center(overlay.overlay);
 
-                    // add a click listener
-                    overlay.overlay.addListener('click', onOverlayClicked);
-
                     // save item
                     var item = $itemService.empty();
                     item.overlayType = overlay.type;
@@ -91,29 +91,49 @@ angular.module('starter.controllers')
                     }
                     // polygon dimensions
                     if (item.overlayType == 'polygon') {
-                        item.quantity = 10.7639 * google.maps.geometry.spherical.computeArea(overlay.overlay.getPath());
+                        item.quantity =
+                            Math.floor(10.7639 * google.maps.geometry.spherical.computeArea(overlay.overlay.getPath()));
                         item.unit = "SF";
                     }
                     // polyline dimensions
                     if (item.overlayType == 'polyline') {
-                        item.quantity = 3.28084 * google.maps.geometry.spherical.computeLength(overlay.overlay.getPath());
+                        item.quantity =
+                            Math.floor(3.28084 * google.maps.geometry.spherical.computeLength(overlay.overlay.getPath()));
+
                         item.unit = "LF";
                     }
 
+                    // save item, then emit event
                     $itemService.save(item, function(item) {
-                        item = item;
+
+                        // add a click listener
+                        // this also associates the item with the marker
+                        overlay.overlay.addListener('click', function(ov) {
+                            // ov is a lightweight version of the overlay...
+                            // don't know why, but that's what google sends on the click event
+                            onOverlayClicked(ov, item);
+                        });
+
+                        console.log('overlay modified = ', overlay);
                         $commService.emit('editItem', item);
                     });
 
                 });
             }
 
-            function onOverlayClicked(overlay) {
+            function onOverlayClicked(overlay, item) {
                 $scope.$apply(function() {
-                    log('overlay clicked', overlay.latLng);
+                    log('overlay clicked', overlay);
+                    log('overlay clicked', item);
+
                     // center on item
                     $gMapService.center(overlay.latLng);
-                    //openPanel();
+
+                    // item is saved as property of overlay
+                    //var item = overlay.assetcalc.item;
+
+                    // emit event
+                    $commService.emit('editItem', item);
                 });
             }
 

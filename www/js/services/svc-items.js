@@ -56,9 +56,25 @@ angular.module('starter.services').service('$itemService',
         function get(params, callback) {
             console.log('getting...');
             // params will be for filtering
-            $http.get(url).then(function(d) {
-                console.log('got', d);
-                if (callback) callback(d.data);
+            if (!params) params = {};
+            if (!params.filter) params.filter = [];
+
+            // adds the delete filter by default
+            params.pageSize = 10;
+            params.filter.push({
+                fieldName: "deleted",
+                operator: "equals",
+                value: false
+            });
+
+            // send request
+            $http({
+                method: "GET",
+                url: url,
+                params: params
+            }).then(function(d) {
+                console.log('got', d.data);
+                if (callback) callback(d.data.data, d.data);
             });
         }
 
